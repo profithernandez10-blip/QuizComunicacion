@@ -1,180 +1,233 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simulacro Final – Comunicación Empresarial (25 preguntas)</title>
-  <style>
-    :root{
-      --bg:#0b1220; --card:#111a2b; --accent:#7aa2ff; --text:#e6eefc; --muted:#9fb3d9;
-      --good:#34d399; --bad:#f87171; --warn:#fbbf24;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-         background:var(--bg); color:var(--text)}
-    header{padding:24px 16px; border-bottom:1px solid #1e2a44; position:sticky; top:0;
-           background:linear-gradient(180deg, rgba(11,18,32,0.95), rgba(11,18,32,0.75)); backdrop-filter: blur(6px); z-index:10}
-    h1{margin:0 0 6px 0; font-size:clamp(20px,3vw,28px)}
-    .sub{color:var(--muted); font-size:14px}
-    .wrap{max-width:1000px; margin:0 auto; padding:16px}
-    .card{background:var(--card); border:1px solid #1e2a44; border-radius:16px; padding:18px; margin:14px 0;
-          box-shadow:0 6px 22px rgba(0,0,0,.2)}
-    .q-header{display:flex; gap:10px; align-items:center; margin-bottom:8px}
-    .pill{background:#102346; color:var(--accent); padding:4px 10px; border-radius:999px; font-size:12px; border:1px solid #1f3a7a; white-space:nowrap}
-    .question{font-weight:700; line-height:1.35}
-    .options{display:grid; gap:10px; margin-top:10px}
-    .opt{display:flex; gap:10px; align-items:flex-start; padding:10px; border:1px solid #243450; border-radius:12px; cursor:pointer; transition:transform .04s ease}
-    .opt:hover{transform:translateY(-1px); border-color:#33538c}
-    input[type="radio"]{transform:translateY(4px)}
-    .feedback{margin-top:8px; font-weight:700}
-    .good{color:var(--good)} .bad{color:var(--bad)} .warn{color:var(--warn)}
-    .explain{margin-top:6px; color:var(--muted); font-size:14px}
-    .actions{display:flex; gap:10px; flex-wrap:wrap}
-    button{background:var(--accent); color:#06112a; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer}
-    button.secondary{background:#1b2a4a; color:var(--text); border:1px solid #2a3e66}
-    .footer{margin:16px 0 6px; color:var(--muted); font-size:12px}
-    .scoreboard{position:sticky; bottom:0; background:linear-gradient(0deg, rgba(11,18,32,0.97), rgba(11,18,32,0.6)); border-top:1px solid #1e2a44; padding:12px 16px}
-    .scoreline{display:flex; justify-content:space-between; gap:10px; align-items:center}
-    progress{width:60%; height:12px}
-    .key{white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0d1628; padding:10px; border-radius:8px; border:1px solid #1e2a44}
-    .hidden{display:none}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Notificación - Nómina recibida</title>
+<style>
+  :root{
+    --bg:#071029;
+    --phone-bg:#0b1220;
+    --card:#0f1726;
+    --accent:#60a5fa;
+    --text:#e6eef8;
+    --muted:#94a3b8;
+    --notif-bg:linear-gradient(180deg,#0b2540,#071735);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(800px 400px at 20% 10%, #0b2340 0%, #081225 25%, var(--bg) 70%);
+    color:var(--text);
+    padding:24px;
+  }
+
+  /* Phone mockup */
+  .phone-wrap{
+    width:360px;
+    height:780px;
+    border-radius:36px;
+    background:linear-gradient(180deg,#061026 0%, #071633 100%);
+    padding:18px;
+    box-shadow: 0 30px 80px rgba(2,8,23,.7), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,.04);
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* notch */
+  .notch{
+    width:170px; height:28px; border-radius:14px; background:rgba(0,0,0,.45);
+    margin-top:6px; box-shadow: 0 2px 6px rgba(0,0,0,.5);
+  }
+
+  /* screen */
+  .screen{
+    width:100%;
+    height:100%;
+    margin-top:8px;
+    border-radius:22px;
+    background: linear-gradient(180deg,#071425,#04101b);
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* wallpaper */
+  .wall{
+    width:100%;
+    height:100%;
+    background:
+      radial-gradient(600px 300px at 60% 10%, rgba(96,165,250,.07), transparent 10%),
+      linear-gradient(180deg,#031026,#041020);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding-top:36px;
+    position:relative;
+  }
+
+  /* time */
+  .time{
+    color:var(--text);
+    font-size:32px;
+    font-weight:600;
+    margin-bottom:8px;
+    text-shadow: 0 6px 24px rgba(2,8,23,.6);
+  }
+  .date{color:var(--muted); font-size:13px; margin-bottom:18px}
+
+  /* phone content area */
+  .content{
+    width:92%;
+    max-width:320px;
+    background:rgba(255,255,255,0.02);
+    border-radius:16px;
+    padding:12px;
+    box-shadow: 0 6px 18px rgba(2,8,23,.6);
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:flex-start;
+  }
+
+  .app-icon{
+    width:48px;height:48px;border-radius:12px;background:linear-gradient(180deg,#073b67,#04507f);
+    display:grid;place-items:center;color:#cce9ff;font-weight:700;font-size:20px;
+    box-shadow: 0 8px 18px rgba(4,20,40,.5) inset;
+  }
+  .app-text{flex:1}
+  .app-title{font-weight:700}
+  .app-sub{color:var(--muted); font-size:13px}
+
+  /* notification banner */
+  .notif{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%) translateY(-220px);
+    top:90px;
+    width:88%;
+    max-width:320px;
+    background:var(--notif-bg);
+    border-radius:14px;
+    padding:14px 14px;
+    color:var(--text);
+    box-shadow: 0 12px 40px rgba(2,8,23,.6);
+    border:1px solid rgba(255,255,255,.04);
+    opacity:0;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    pointer-events:none;
+  }
+
+  .notif.show{
+    animation:dropIn 0.6s cubic-bezier(.2,.9,.22,1) forwards, pulse 1.6s ease 0.6s 1;
+  }
+  @keyframes dropIn{
+    from{ transform:translateX(-50%) translateY(-240px) scale(.98); opacity:0; filter:blur(6px);}
+    to{ transform:translateX(-50%) translateY(0) scale(1); opacity:1; filter:blur(0);}
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 12px 40px rgba(2,8,23,.6);}
+    50%{ box-shadow: 0 18px 60px rgba(0,120,200,.14);}
+    100%{ box-shadow: 0 12px 40px rgba(2,8,23,.6);}
+  }
+
+  .notif .left{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,0.04); display:grid;place-items:center; font-weight:700; color:var(--accent)}
+  .notif .body{flex:1}
+  .notif .title{font-weight:800; font-size:15px; margin-bottom:4px}
+  .notif .msg{color:var(--muted); font-size:13px}
+  .notif .amount{margin-top:6px; font-weight:900; color:#dff6ff; font-size:16px}
+
+  /* shake */
+  .shake{ animation:shake 0.6s linear 0s 2; }
+  @keyframes shake{
+    0%{ transform:translateX(-50%) translateY(0) rotate(0deg)}
+    25%{ transform:translateX(-50%) translateY(-6px) rotate(-1deg)}
+    50%{ transform:translateX(-50%) translateY(0) rotate(1deg)}
+    75%{ transform:translateX(-50%) translateY(-3px) rotate(-.6deg)}
+    100%{ transform:translateX(-50%) translateY(0) rotate(0deg)}
+  }
+
+  /* small helper button */
+  .controls-area{ position:absolute; bottom:18px; width:100%; display:flex; justify-content:center; gap:10px; padding:0 18px; }
+  .tiny{ padding:8px 12px; border-radius:10px; background:rgba(255,255,255,0.03); color:var(--muted); border:1px solid rgba(255,255,255,0.02); cursor:pointer; font-weight:600}
+  .tiny:active{ transform:translateY(1px) }
+
+  /* accessibility text */
+  .caption{ position:absolute; bottom:90px; color:var(--muted); font-size:13px; text-align:center; width:90%}
+</style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <h1>Simulacro Final – Comunicación Empresarial</h1>
-    <div class="sub">25 preguntas: 10 fáciles/intermedias • 10 intermedio–alto (casos largos y engañosos) • 5 muy difíciles/confusas</div>
-  </div>
-</header>
+  <div class="phone-wrap" role="application" aria-label="Mockup de iPhone">
+    <div class="notch" aria-hidden="true"></div>
+    <div class="screen">
+      <div class="wall">
+        <div style="text-align:center">
+          <div class="time">07:03</div>
+          <div class="date">Viernes, 25 septiembre</div>
+        </div>
 
-<main class="wrap">
-  <div class="card">
-    <p><strong>Instrucciones:</strong> marca una opción por pregunta y pulsa <em>Calificar</em>. Puedes <em>Reiniciar</em> el intento o <em>Ver Respuestas</em>. No hay separadores visibles por secciones.</p>
-    <div class="actions">
-      <button id="grade">Calificar</button>
-      <button id="reset" class="secondary">Reiniciar</button>
-      <button id="showKey" class="secondary">Ver Respuestas</button>
+        <div class="content" style="margin-top:20px">
+          <div class="app-icon">RH</div>
+          <div class="app-text">
+            <div class="app-title">Recursos Humanos</div>
+            <div class="app-sub">Pago de nómina • Hoy</div>
+          </div>
+        </div>
+
+        <!-- notification -->
+        <div id="notif" class="notif" role="status" aria-live="polite">
+          <div class="left">€</div>
+          <div class="body">
+            <div class="title">Nómina recibida</div>
+            <div class="msg">Depósito confirmado en tu cuenta</div>
+            <div class="amount">COP $750.000</div>
+          </div>
+        </div>
+
+        <div class="caption">Graba la pantalla para tu videoclip. Pulsa "Probar notificación" para verla.</div>
+        <div class="controls-area">
+          <button class="tiny" id="btn">Probar notificación</button>
+          <button class="tiny" id="btn-vib">Con vibración</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="quiz"></div>
-
-  <div class="card">
-    <h3>Respuestas correctas</h3>
-    <div id="answerKey" class="key hidden"></div>
-    <div class="footer">Contenido basado en tus diapositivas y apuntes: comunicación interna/externa, identidad–imagen–reputación–marca, consultoría (diagnóstico, fases, protocolos) y aplicación a casos.</div>
-  </div>
-</main>
-
-<div class="scoreboard">
-  <div class="scoreline">
-    <div><strong>Puntuación:</strong> <span id="score">0</span>/25</div>
-    <progress id="bar" value="0" max="25"></progress>
-    <div id="percent">0%</div>
-  </div>
-</div>
-
 <script>
-// 25 questions in a single list. 
-// Q1–Q10: fáciles/intermedias (conceptos). 
-// Q11–Q20: intermedio–alto (casos largos/engañosos). 
-// Q21–Q25: muy difíciles/confusas.
+  const notif = document.getElementById('notif');
+  const btn = document.getElementById('btn');
+  const btnv = document.getElementById('btn-vib');
 
-const qs = [
-  // 1–10 fáciles/intermedias
-  {q:"1) ¿Qué describe mejor la comunicación corporativa?", o:["Sistema estratégico para relacionar a la organización con públicos internos y externos mediante mensajes alineados a objetivos","Conjunto de diseños para redes sociales","Comunicación informal entre empleados","Solo relaciones públicas externas"], a:0, e:"Es estratégica, planificada y bidimensional (interna/externa)."},
-  {q:"2) Orden lógico correcto entre Identidad, Imagen, Reputación y Marca:", o:["Imagen → Reputación → Identidad → Marca","Identidad → Imagen → Reputación → Marca","Reputación → Imagen → Identidad → Marca","Marca → Reputación → Identidad → Imagen"], a:1, e:"Identidad (quién eres) → Imagen (cómo te perciben) → Reputación (percepción sostenida) → Marca."},
-  {q:"3) ¿Cuál NO es un componente de la identidad de marca?", o:["Valores y personalidad","Tipografía y colores","Nombre y logotipo","Reputación consolidada por audiencias"], a:3, e:"La reputación es resultado, no elemento de identidad."},
-  {q:"4) La comunicación interna bien gestionada favorece principalmente…", o:["Cohesión, clima saludable y adaptación al cambio","Solo cumplimiento legal externo","Rumores más veloces","Eliminar necesidad de liderazgo"], a:0, e:"Aporta coordinación, motivación y aprendizaje organizacional."},
-  {q:"5) En comunicación externa es crítico:", o:["No medir resultados para no sesgarse","Gestionar crisis y coherencia de mensajes con métricas de impacto","Usar solo canales tradicionales","Hablar únicamente con inversores"], a:1, e:"Externa = imagen, reputación, coherencia y medición."},
-  {q:"6) En consultoría, el diagnóstico sólido implica:", o:["Entrevistar solo a gerentes","Triangular entrevistas, encuestas, observación, revisión documental y benchmarking","Saltarse la recolección para actuar rápido","Centrarse en publicidad externa"], a:1, e:"Triangulación y foco en causas, no solo síntomas."},
-  {q:"7) ¿Cuál es el orden estándar del proyecto de consultoría?", o:["Relación → Identificación → Planeación → Ejecución → Evaluación → Cierre","Identificación → Relación → Ejecución → Planeación → Evaluación → Cierre","Ejecución → Planeación → Relación → Evaluación → Cierre → Identificación","Relación → Planeación → Evaluación → Identificación → Cierre → Ejecución"], a:0, e:"Secuencia clásica para proyectos de intervención."},
-  {q:"8) Buena práctica de comunicación interna:", o:["Transparencia, escucha activa y reconocimiento","Evitar feedback para reducir tensiones","Canal único rígido para todo","Mensajes sensibles por chats informales"], a:0, e:"Feedback + transparencia + reconocimiento = clima sano."},
-  {q:"9) Diferencia clave: interna vs externa:", o:["Interna cohesiona equipos; externa posiciona imagen y reputación","Interna mide reputación; externa mide clima","Son idénticas","La interna solo se usa en crisis"], a:0, e:"Rol central de cada dimensión."},
-  {q:"10) En el planteamiento del reto, un criterio de calidad es:", o:["Cantidad de likes de la empresa","Relevancia del problema, viabilidad y novedad","Número de sedes","Color corporativo"], a:1, e:"Criterios para afinar el problema y su abordaje."},
+  function showNotif(withVib=false){
+    // reset
+    notif.classList.remove('show','shake');
+    void notif.offsetWidth;
+    // show
+    notif.classList.add('show');
+    if(withVib){
+      // quick shake on the banner and small rumbles
+      setTimeout(()=> notif.classList.add('shake'), 500);
+      // try to vibrate device if allowed
+      try{ if(navigator.vibrate) navigator.vibrate([120,40,80]); }catch(e){}
+    }
+    // auto hide after 4s
+    setTimeout(()=> notif.classList.remove('show','shake'), 4200);
+  }
 
-  // 11–20 intermedio–alto (casos largos y engañosos)
-  {q:"11) (Caso) Una fintech usa correos masivos para todo, incluso temas sensibles. Empleados reportan mensajes contradictorios entre áreas; gerencia quiere 'más correos' para trazabilidad. ¿Qué recomiendas como consultor?", o:["Aumentar correos para un solo hilo","Migrar a plataforma colaborativa con gobernanza de mensajes, actas públicas y boletín visual periódico","Sustituir todo por carteles físicos","Prohibir comunicación informal"], a:1, e:"Coherencia + gobernanza + canal colaborativo disminuyen ruido y contradicciones."},
-  {q:"12) (Caso) ONG con voluntarios remotos: reportan poca voz y miedo a opinar. ¿Qué priorizas?", o:["Más comunicados unidireccionales","Espacios participativos (foros/cafés) con reglas de feedback y seguimiento","Cerrar canales para ordenar","Solo encuestas anuales sin devolución"], a:1, e:"Participación y escucha estructurada fomentan apropiación."},
-  {q:"13) (Caso) Retail: favoritismo de mandos medios, decisiones por WhatsApp y sin protocolos de feedback. La gerencia propone instalar pantallas digitales con anuncios. ¿Tu enfoque?", o:["Primero protocolos de feedback y formación de líderes; luego soportes visuales","Instalar pantallas de inmediato","Refuerzo exclusivo de WhatsApp por cercanía","Silenciar quejas para evitar ruido"], a:0, e:"Atender causas (liderazgo/feedback) antes de cosmética."},
-  {q:"14) (Caso) Start‑up 'sostenible' con crisis por incoherencia entre promesas externas y prácticas internas. ¿Qué priorizas?", o:["Campaña agresiva para mejorar percepción","Alinear identidad, cultura interna y mensajes externos tras diagnóstico","Nuevos slogans más emotivos","Evitar tocar el tema interno para no exponerse"], a:1, e:"La reputación depende de coherencia identidad–prácticas–mensajes."},
-  {q:"15) (Caso) Empresa industrial: tres sedes, silos entre áreas y reuniones sin actas. ¿Qué medida rompe silos y da trazabilidad?", o:["Comités inter‑áreas con agenda fija y actas públicas","Más reuniones ad‑hoc sin agenda","Delegar todo en un correo general","Carteles físicos únicamente"], a:0, e:"Comités + agenda + actas = coordinación y memoria organizacional."},
-  {q:"16) (Caso) Alta rotación junior; líderes 'dan feedback' pero empleados no lo perciben. ¿Qué implementas para objetivar el proceso?", o:["Mentorías cruzadas con guías de feedback y métricas de seguimiento","Mensajes motivacionales en intranet","Reuniones informales sin registro","Encuestas sin devolución para no 'cargar' a líderes"], a:0, e:"Estructurar feedback y medirlo mejora retención."},
-  {q:"17) (Caso) Cooperativa educativa: boletines oficiales dicen A; coordinadores locales dicen B. ¿Qué atacas primero?", o:["Homologar criterios y protocolo de mensajes; canal oficial de referencia","Mantener pluralidad sin reglas por diversidad","Prohibir reuniones locales","Reducir boletines a uno al mes sin alinear criterios"], a:0, e:"Coherencia de mensajes + canal de referencia + protocolo."},
-  {q:"18) (Aplicación) Indicador pertinente para evaluar avance de comunicación interna a 90 días:", o:["Cantidad de posts en redes","Satisfacción interna con la comunicación y uso de canales, con línea base","Likes en Instagram","Número de slogans nuevos"], a:1, e:"Percepción/uso con línea base mide impacto interno."},
-  {q:"19) (Aplicación) Para analizar estilo de dirección real, es más útil observar:", o:["Logo y tipografía","Cómo se deciden objetivos, dinámica de reuniones y resolución de problemas","Número de campañas publicitarias","Tamaño de la sede"], a:1, e:"El estilo aflora en prácticas, no en artefactos visuales."},
-  {q:"20) (Aplicación) Para identificar bien el reto, la combinación más sólida es:", o:["Suposiciones de gerencia + carteles informales","Entrevistas multi‑actor + encuestas + revisión documental + árbol de problemas","Solo una encuesta abierta","Solo benchmarking externo"], a:1, e:"Triangulación + causa‑efecto precisan el reto."},
+  btn.addEventListener('click', ()=> showNotif(false));
+  btnv.addEventListener('click', ()=> showNotif(true));
 
-  // 21–25 muy difíciles/confusas
-  {q:"21) (Confusa) La dirección afirma que el problema es 'falta de compromiso'. El diagnóstico muestra incoherencia de mensajes, feedback irregular y verticalismo. ¿Cuál formulación del reto es más precisa?", o:["Baja motivación del personal","Inconsistencias en el sistema de comunicación interna que impiden participación y alineación","Escasez de campañas de celebración","Necesidad de más carteleras"], a:1, e:"Nombrar el sistema/proceso causa, no culpabilizar actitudes genéricas."},
-  {q:"22) (Confusa) Señala la opción que vulnera el manejo responsable de información en consultoría:", o:["Priorizar hallazgos por validez y relevancia","Validar significados con actores al socializar","Usar solo la versión de la alta dirección por 'confidencialidad'","Optimizar tiempos combinando recolección y validación"], a:2, e:"Confiar solo en alta dirección sesga y rompe apropiación."},
-  {q:"23) (Confusa) ¿Qué pieza NO resuelve por sí misma una crisis de coherencia identidad–prácticas–mensajes?", o:["Protocolo de comunicación para decisiones sensibles","Boletín visual semanal sin revisar decisiones y procesos","Formación de líderes en feedback y escucha","Canal colaborativo con gobernanza"], a:1, e:"Boletín sin cambios estructurales no corrige incoherencia."},
-  {q:"24) (Confusa) Secuencia robusta para plan de comunicación interna:", o:["Definir públicos y canales; luego objetivos y métricas","Diagnóstico → objetivos → públicos/mensajes → estrategias/tácticas → canales → indicadores → cronograma y gobernanza","Elegir herramientas; después pensar objetivos","Redactar boletines; después ver públicos"], a:1, e:"Secuencia completa desde diagnóstico a gobernanza/medición."},
-  {q:"25) (Confusa) Para una visión integral del impacto a 90 días, ¿qué combo de métricas es más útil?", o:["Satisfacción interna + participación en espacios de escucha + reducción de rotación en área crítica","Cantidad de correos + carteles físicos","Likes en redes + visitas web","Número de reuniones"], a:0, e:"Combina percepción/uso con outcome de personas (rotación)."},
-];
-
-function renderQuiz(){
-  const mount = document.getElementById('quiz');
-  qs.forEach((q, i)=>{
-    const idx = i+1;
-    const box = document.createElement('div'); box.className='card';
-    const head = document.createElement('div'); head.className='q-header';
-    head.innerHTML = `<span class="pill">Pregunta ${idx}</span><div class="question">${q.q}</div>`;
-    box.appendChild(head);
-    const opts = document.createElement('div'); opts.className='options';
-    q.o.forEach((txt, j)=>{
-      const id = `q${idx}_o${j}`;
-      const label = document.createElement('label'); label.className='opt';
-      label.innerHTML = `<input type="radio" name="q${idx}" id="${id}" value="${j}"/><span><strong>${'ABCD'[j]})</strong> ${txt}</span>`;
-      opts.appendChild(label);
-    });
-    const fb = document.createElement('div'); fb.className='feedback'; fb.id = `fb${idx}`;
-    const ex = document.createElement('div'); ex.className='explain'; ex.id = `ex${idx}`;
-    box.appendChild(opts); box.appendChild(fb); box.appendChild(ex);
-    mount.appendChild(box);
-  });
-}
-renderQuiz();
-
-function grade(){
-  let score = 0;
-  qs.forEach((q,i)=>{
-    const idx = i+1;
-    const sel = document.querySelector(`input[name="q${idx}"]:checked`);
-    const fb = document.getElementById(`fb${idx}`);
-    const ex = document.getElementById(`ex${idx}`);
-    if(!sel){ fb.textContent = "⚠️ Sin respuesta."; fb.className = "feedback warn"; ex.textContent=""; return; }
-    const val = parseInt(sel.value,10);
-    if(val === q.a){ score++; fb.textContent="✅ Correcto"; fb.className="feedback good"; }
-    else{ fb.textContent=`❌ Incorrecto (Correcta: ${'ABCD'[q.a]})`; fb.className="feedback bad"; }
-    ex.textContent = q.e || "";
-  });
-  document.getElementById('score').textContent = score;
-  document.getElementById('bar').value = score;
-  document.getElementById('percent').textContent = Math.round(score/qs.length*100) + "%";
-}
-
-function resetQuiz(){
-  document.querySelectorAll('input[type="radio"]').forEach(r=> r.checked=false);
-  document.querySelectorAll('.feedback').forEach(f=>{f.textContent=""; f.className="feedback";});
-  document.querySelectorAll('.explain').forEach(e=> e.textContent="");
-  document.getElementById('score').textContent = 0;
-  document.getElementById('bar').value = 0;
-  document.getElementById('percent').textContent = "0%";
-  document.getElementById('answerKey').classList.add('hidden');
-}
-
-function showKey(){
-  const list = qs.map((q,i)=> `${i+1}. ${'ABCD'[q.a]}`).join("  |  ");
-  const el = document.getElementById('answerKey');
-  el.textContent = list;
-  el.classList.toggle('hidden');
-}
-
-document.getElementById('grade').addEventListener('click', grade);
-document.getElementById('reset').addEventListener('click', resetQuiz);
-document.getElementById('showKey').addEventListener('click', showKey);
+  // auto-show on load for convenience
+  window.addEventListener('load', ()=> setTimeout(()=> showNotif(true), 900));
 </script>
 </body>
 </html>
